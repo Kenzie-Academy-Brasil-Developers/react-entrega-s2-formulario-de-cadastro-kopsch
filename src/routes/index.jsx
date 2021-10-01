@@ -2,13 +2,13 @@ import { Switch, Route } from "react-router-dom";
 import Registration from "../pages/Registration";
 import Home from "../pages/Home";
 
-const Routes = ({ name, setName }) => {
+const Routes = ({ username, setUsername }) => {
   return (
     <Switch>
-      <Route path="/">
-        <Registration setName={setName} />
+      <Route exact path="/">
+        <Registration setUsername={setUsername} />
       </Route>
-      <Route exact path="/home/:user">
+      <Route path="/home/:user">
         <Home />
       </Route>
     </Switch>

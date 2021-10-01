@@ -3,11 +3,11 @@ import Routes from "./routes";
 import { useState } from "react";
 
 function App() {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
 
   return (
     <div className="App">
-      <Routes name={name} setName={setName} />
+      <Routes username={username} setUsername={setUsername} />
     </div>
   );
 }

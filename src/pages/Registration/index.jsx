@@ -1,11 +1,19 @@
-import { TextField, Button } from "@material-ui/core";
+import { TextField, Button, makeStyles } from "@material-ui/core";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { FormStyled } from "./styles";
 
-const Registration = ({ setName }) => {
+const Registration = ({ setUsername }) => {
+  const useStyles = makeStyles({
+    input: {
+      marginBottom: "10px",
+      width: "75%",
+    },
+  });
+
+  const classes = useStyles();
   const history = useHistory();
 
   const schema = yup.object().shape({
@@ -15,16 +23,14 @@ const Registration = ({ setName }) => {
       .string()
       .required("Senha obrigatória")
       .matches(
-        "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})",
-        "A senha precisa no mínimo de uma letra maiúscula, um número e um símbolo"
+        "^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})",
+        "A senha precisa no mínimo de um número e um símbolo"
       ),
     passwordconfirm: yup
       .string()
       .required("Confirme sua senha!")
       .oneOf([yup.ref("password"), null], "As senhas devem ser iguais."),
   });
-
-  const [userData, setUserData] = useState({});
 
   const {
     register,
@@ -35,13 +41,14 @@ const Registration = ({ setName }) => {
   });
 
   const handleLogin = (data) => {
-    setUserData(data);
+    setUsername(data.username);
     history.push(`/home/${data.username}`);
   };
 
   return (
-    <form onSubmit={handleSubmit(handleLogin)}>
+    <FormStyled onSubmit={handleSubmit(handleLogin)}>
       <TextField
+        className={classes.input}
         variant="outlined"
         label="Escreva seu usuário"
         {...register("username")}
@@ -50,6 +57,7 @@ const Registration = ({ setName }) => {
       />
 
       <TextField
+        className={classes.input}
         variant="outlined"
         label="Escreva seu email"
         {...register("email")}
@@ -58,23 +66,29 @@ const Registration = ({ setName }) => {
       />
 
       <TextField
+        className={classes.input}
         variant="outlined"
         label="Escreva sua senha"
+        type="password"
         {...register("password")}
         error={!!errors.password}
         helperText={errors.password?.message}
       />
 
       <TextField
+        className={classes.input}
         variant="outlined"
         label="Confirme sua senha"
+        type="password"
         {...register("passwordconfirm")}
         error={!!errors.passwordconfirm}
         helperText={errors.passwordconfirm?.message}
       />
 
-      <Button type="submit">REGISTRAR</Button>
-    </form>
+      <Button variant="outlined" type="submit">
+        REGISTRAR
+      </Button>
+    </FormStyled>
   );
 };
 
